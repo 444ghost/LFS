@@ -8,4 +8,29 @@ sudo ln -sf bash /bin/sh // creating a symbolic link to the /bin/sh file
 git add .
 git push origin master
 sudo apt-get install bison gawk texinfo
-
+dd if=/dev/zero of=image.img iflag=fullblock bs=1M count=10240 && sync
+// make partitions 1G, 7G, 1G of partition 1,2,3
+// refer to https://www.thegeekdiary.com/how-to-create-partitions-inside-loopback-images/
+// remount to refresh the partition table
+sudo losetup -fP LFS.img 
+// f = find the first unused loop device
+// P = force the kernel to scan the paritition table on a newly created device
+sudo mkfs -v -t ext4 /dev/loop0p2
+sudo mkswap /dev/loop0p3
+sudo mount -v -types ext4 /dev/loop0p2 $LFS
+// mounting the second partition on the working directory
+/sbin/swapon -v /dev/<zzz> // swap partition on
+sudo mkdir -v $LFS/sources
+sudo chmod a+wt $LFS/sources // give writtable permission to all but only root can delete
+// download all the packages at ftp://ftp.lfs-matrix.net/pub/lfs/lfs-packages/
+mkdir @LFS/tools
+ln -sv $LFS/tools /
+groupadd lfs
+useradd -s /bin/bash -g lfs -m -k /dev/null lfs
+// s = current being set to the default shell of user lfs
+// g = adding group to a user
+// m = create a home directory to lfs
+// k = preventing copying from skelton directories by setting null device
+// ~/.bash_profile: login shell ~/.bashrc: non-login shell
+source ~/.bash_profile
+source ~/.bashrc 
