@@ -17,7 +17,7 @@ sudo losetup -fP LFS.img
 // P = force the kernel to scan the paritition table on a newly created device
 sudo mkfs -v -t ext4 /dev/loop0p2
 sudo mkswap /dev/loop0p3
-sudo mount -v -types ext4 /dev/loop0p2 $LFS
+sudo mount -v --types ext4 /dev/loop0p2 $LFS
 // mounting the second partition on the working directory
 /sbin/swapon -v /dev/<zzz> // swap partition on
 sudo mkdir -v $LFS/sources
@@ -30,7 +30,10 @@ useradd -s /bin/bash -g lfs -m -k /dev/null lfs
 // s = current being set to the default shell of user lfs
 // g = adding group to a user
 // m = create a home directory to lfs
-// k = preventing copying from skelton directories by setting null device
+// k = preventing copying from skeleton directories by setting null device
 // ~/.bash_profile: login shell ~/.bashrc: non-login shell
 source ~/.bash_profile
-source ~/.bashrc 
+source ~/.bashrc
+// build all packages 
+// for binutil error regarding target not matching for config
+// find . -name config.cache -exec rm -f {} \;
